@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Perjalanan Sang Kader - Game Perkaderan HMI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+</head>
+<body>
+
+    <div id="game-wrapper">
+        <!-- HUD / Dashboard Player -->
+        <div id="game-hud">
+            <div class="hud-left">
+                <div id="level-badge" class="hud-badge">LEVEL: LK 1</div>
+                <div id="lives-info" class="hud-info">❤️ Nyawa: 3</div>
+            </div>
+            <div class="hud-right">
+                <div id="progress-info" class="hud-info">Pos Selesai: 0 / 3</div>
+            </div>
+        </div>
+
+        <div id="game-container"></div>
+
+        <!-- System Dialogue Box (Visual Novel Style) -->
+        <div id="story-overlay" class="story-container hidden">
+            <div id="story-portrait" class="portrait-box">
+                <img id="portrait-img" src="assets/player.png" alt="Character Portrait">
+            </div>
+            <div class="dialogue-box">
+                <div id="speaker-name" class="speaker-title">Kader HMI</div>
+                <div id="dialogue-text" class="dialogue-content">...</div>
+                <div class="dialogue-footer">
+                    <span><span class="kbd-only">Tekan <kbd>ENTER</kbd> / Klik</span><span class="touch-only">Ketuk layar</span> untuk Lanjut</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prompt Interaksi Floating -->
+        <div id="interaction-prompt" class="prompt-bubble hidden">
+            <span class="kbd-only">Tekan <kbd>E</kbd></span><span class="touch-only">Ketuk tombol <kbd>E</kbd></span> untuk Menghadap Screener
+        </div>
+
+        <!-- Control Touch untuk HP / Android -->
+        <div id="touch-controls" class="touch-container">
+            <div class="dpad">
+                <button id="btn-up" type="button" class="dpad-btn up">▲</button>
+                <div class="dpad-row">
+                    <button id="btn-left" type="button" class="dpad-btn left">◄</button>
+                    <button id="btn-down" type="button" class="dpad-btn down">▼</button>
+                    <button id="btn-right" type="button" class="dpad-btn right">►</button>
+                </div>
+            </div>
+            <div class="action-btn-container">
+                <button id="btn-action-e" type="button" class="action-btn">E</button>
+            </div>
+        </div>
+
+        <!-- UI Kuis & Forum -->
+        <div id="quiz-modal" class="modal hidden">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <span id="pos-badge" class="badge">POS SCREENING</span>
+                    <div class="timer-badge">⏳ <span id="timer-text">30</span>s</div>
+                </div>
+                <h2 id="screener-title">Master Screener</h2>
+                
+                <div class="typewriter-box">
+                    <p id="question-text"></p>
+                </div>
+
+                <div id="options-container" class="options-list"></div>
+
+                <div class="modal-footer">
+                    <button id="btn-close-quiz" type="button" class="btn-cancel">Batal / Tutup</button>
+                    <button id="btn-lafran" type="button" class="btn-lafran">💡 Tanya Ayanda Lafran</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- UI AI Lafran -->
+        <div id="lafran-modal" class="modal hidden">
+            <div class="modal-card lafran-card">
+                <div class="lafran-header">
+                    <div class="avatar-circle">💚</div>
+                    <div>
+                        <h3>Ayanda Lafran Pane</h3>
+                        <span class="subtext">Mentor Perkaderan</span>
+                    </div>
+                </div>
+                <div class="typewriter-box lafran-box">
+                    <p id="lafran-response"></p>
+                </div>
+                <button id="btn-close-lafran" type="button" class="btn-close">Kembali ke Screening</button>
+            </div>
+        </div>
+
+        <!-- Modal Game Over -->
+        <div id="status-modal" class="modal hidden">
+            <div class="modal-card level-card">
+                <h2 id="status-title">❌ GAME OVER</h2>
+                <p id="status-msg">Indeks kelulusan Anda gugur. Silakan mengulang dari awal!</p>
+                <button id="btn-status-action" type="button" class="btn-lafran">Ulangi dari Awal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js" defer></script>
+</body>
+</html>

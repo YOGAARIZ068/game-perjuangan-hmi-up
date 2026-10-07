@@ -1,0 +1,493 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #0b0e14;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+#game-wrapper {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 1920px;
+    max-height: 1080px;
+    border: 4px solid #005f28;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0, 128, 55, 0.4), 0 0 50px rgba(0,0,0,0.8);
+}
+
+#game-hud {
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hud-left, .hud-right {
+    display: flex;
+    gap: 12px;
+}
+
+.hud-badge {
+    background: linear-gradient(135deg, #008037, #004d21);
+    color: #fff;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.hud-info {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* VISUAL NOVEL STORY SYSTEM */
+.story-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 8000;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    pointer-events: auto;
+}
+
+.portrait-box {
+    position: absolute;
+    bottom: 160px;
+    left: 80px;
+    height: 65%;
+    max-height: 550px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.portrait-box img {
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+}
+
+.dialogue-box {
+    position: relative;
+    width: 90%;
+    margin: 0 auto 30px auto;
+    background: rgba(15, 23, 42, 0.95);
+    border: 3px solid #008037;
+    border-radius: 14px;
+    padding: 22px 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    z-index: 8001;
+    cursor: pointer;
+}
+
+.speaker-title {
+    color: #4ade80;
+    font-size: 1.35rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dialogue-content {
+    color: #f8fafc;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    min-height: 65px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.dialogue-footer {
+    text-align: right;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+/* Prompt Interaksi Floating */
+.prompt-bubble {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #008037, #005a26);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    z-index: 50;
+    pointer-events: none;
+    animation: bounce 1s infinite alternate;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+kbd {
+    background: #fff;
+    color: #008037;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 800;
+}
+
+@keyframes bounce {
+    from { transform: translate(-50%, 0); }
+    to { transform: translate(-50%, -10px); }
+}
+
+#game-container {
+    width: 100%;
+    height: 100%;
+}
+
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 15, 25, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999 !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.modal-card {
+    background: #ffffff;
+    width: 90%;
+    max-width: 680px;
+    padding: 30px;
+    border-radius: 16px;
+    border-top: 8px solid #008037;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.badge {
+    background: #e8f5e9;
+    color: #008037;
+    font-size: 0.95rem;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 6px;
+}
+
+.timer-badge {
+    background: #fff3e0;
+    color: #e65100;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 6px 14px;
+    border-radius: 6px;
+}
+
+h2 {
+    color: #111;
+    font-size: 1.6rem;
+}
+
+.typewriter-box {
+    background: #f8f9fa;
+    border: 1px solid #e2e8f0;
+    padding: 18px;
+    border-radius: 10px;
+    min-height: 80px;
+    margin: 18px 0;
+}
+
+#question-text, #lafran-response {
+    font-size: 1.15rem;
+    color: #1e293b;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.option-btn {
+    background: #ffffff;
+    border: 2px solid #cbd5e1;
+    padding: 14px 18px;
+    border-radius: 10px;
+    text-align: left;
+    cursor: pointer !important;
+    font-size: 1.05rem;
+    color: #1e293b;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.option-btn:hover {
+    background: #e8f5e9;
+    border-color: #008037;
+    color: #008037;
+    font-weight: bold;
+    transform: translateY(-2px);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+button {
+    cursor: pointer !important;
+}
+
+.btn-lafran {
+    background: linear-gradient(135deg, #008037, #005f28);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 128, 55, 0.3);
+}
+
+.btn-cancel {
+    background: #64748b;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.lafran-card {
+    background: #f0fdf4;
+    border-top: 8px solid #166534;
+}
+
+.lafran-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.avatar-circle {
+    width: 52px;
+    height: 52px;
+    background: #008037;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    box-shadow: 0 4px 12px rgba(0, 128, 55, 0.3);
+}
+
+.subtext {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.btn-close {
+    background: #334155;
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.level-card {
+    text-align: center;
+}
+.level-card p {
+    margin: 18px 0 28px 0;
+    font-size: 1.1rem;
+}
+
+/* ==================== CONTROL & LAYOUT TOUCH HP ==================== */
+
+/* Paksa area game memenuhi layar HP tanpa scroll/zoom */
+html, body {
+    width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+    background-color: #000;
+    touch-action: manipulation;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Wrapper selalu 16:9 (sama dengan canvas Phaser) agar HUD, dialog & kontrol sejajar dengan game */
+#game-wrapper {
+    width: min(100vw, calc(100dvh * 16 / 9));
+    height: min(100dvh, calc(100vw * 9 / 16));
+    max-width: none;
+    max-height: none;
+    background: #0b0e14;
+}
+#game-container { position: absolute; inset: 0; touch-action: none; }
+.modal-card { max-height: 94%; overflow-y: auto; touch-action: pan-y; }
+.touch-container, .touch-container * {
+    -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+}
+
+/* Tampilan Tombol Sentuh (D-Pad & Tombol E) di HP */
+.touch-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    z-index: 500;
+    pointer-events: none;
+}
+
+.dpad, .action-btn-container {
+    pointer-events: auto;
+}
+
+.dpad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dpad-row {
+    display: flex;
+    gap: 8px;
+}
+
+.dpad-btn {
+    width: 55px;
+    height: 55px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+    touch-action: manipulation;
+    user-select: none;
+}
+
+.dpad-btn:active, .action-btn:active {
+    background: rgba(0, 128, 55, 0.8);
+    transform: scale(0.95);
+}
+
+.action-btn {
+    width: 70px;
+    height: 70px;
+    background: rgba(0, 128, 55, 0.6);
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 50%;
+    backdrop-filter: blur(4px);
+    touch-action: manipulation;
+    user-select: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* Sembunyikan tombol sentuh jika game dibuka dari Laptop / PC */
+.touch-container { display: none; }
+.touch-only { display: none; }
+@media (hover: none), (pointer: coarse) {
+    .touch-container { display: flex; }
+    .kbd-only { display: none; }
+    .touch-only { display: inline; }
+}
+body.touch-active .touch-container { display: flex; }
+body.touch-active .kbd-only { display: none; }
+body.touch-active .touch-only { display: inline; }
+
+/* Peringatan Otomatis Jika HP Dipegang Tegak (Portrait) */
+@media screen and (orientation: portrait) and ((hover: none) or (pointer: coarse)) {
+    #game-wrapper::before {
+        content: "🔄 Harap Putar HP Anda ke Posisi Landscape (Miring)";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #0f172a;
+        color: #ffffff;
+        font-size: 1.2rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+        z-index: 99999;
+    }
+}
+
+/* HP landscape (layar pendek) */
+@media (max-height: 520px) {
+    #game-hud { top: 8px; left: 12px; right: 12px; }
+    .hud-badge, .hud-info { padding: 5px 12px; font-size: 0.85rem; }
+    .portrait-box { bottom: 105px; left: 24px; height: 55%; }
+    .dialogue-box { padding: 10px 16px; margin-bottom: 12px; }
+    .speaker-title { font-size: 1rem; margin-bottom: 4px; }
+    .dialogue-content { font-size: 0.95rem; min-height: 44px; line-height: 1.4; }
+    .dialogue-footer { margin-top: 4px; font-size: 0.75rem; }
+    .modal-card { padding: 14px 18px; }
+    h2 { font-size: 1.15rem; }
+    .typewriter-box { padding: 10px; min-height: 52px; margin: 8px 0; }
+    #question-text, #lafran-response { font-size: 0.95rem; }
+    .options-list { gap: 6px; margin-bottom: 10px; }
+    .option-btn { padding: 8px 12px; font-size: 0.9rem; }
+    .dpad-btn { width: 46px; height: 46px; }
+    .action-btn { width: 60px; height: 60px; }
+}
